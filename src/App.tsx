@@ -28,10 +28,20 @@ function App() {
         setTasks(filteredTasks); //измени в state таски, вызывается после логич обработки
     }
 
-    function addTask(title: string) {
+    function addTask(title: string) { // придет из todolist
         let newTask = {id: v1(), title: title, isDone: false};
         let newTasks = [newTask, ...tasks];
         setTasks(newTasks);
+    }
+
+
+
+    function changeStatus(taskId: string, isDone: boolean) {
+       let task =  tasks.find( t => t.id === taskId);
+       if (task){
+           task.isDone = isDone;
+       }
+       setTasks([...tasks]);
     }
 
     function changeFilter(value: FilterValuesType) { // педадам ее callback-ом в todolist
@@ -54,7 +64,10 @@ function App() {
                       tasks={tasksForTodolist}
                       removeTask={removeTask}
                       changeFilter={changeFilter}
-                      addTask = {addTask}/>
+                      addTask = {addTask}
+                      changeTaskStatus = {changeStatus}
+                      filter={filter}/>
+
         </div>
     );
 }
