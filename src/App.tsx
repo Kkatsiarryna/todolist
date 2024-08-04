@@ -8,19 +8,17 @@ import {Menu} from "@mui/icons-material";
 
 export type FilterValuesType = "all" | "completed" | "active"
 
+export type TodolistType = {
+    id: string
+    title: string
+    filter: FilterValuesType
+}
+
+export type TasksStateType = {
+    [key: string]: TaskType[]
+}
 
 function App() {
-
-    type TodolistType = {
-        id: string
-        title: string
-        filter: FilterValuesType
-    }
-
-    type TasksStateType = {
-        [key: string]: TaskType[]
-    }
-
     let todolistID1 = v1();
     let todolistID2 = v1();
 
@@ -65,6 +63,14 @@ function App() {
         setTasks({...tasksObj});
     }
 
+    function changeTaskTitle(taskId: string, newTitle: string, todolistId: string) {
+        setTasks({
+            ...tasksObj,
+            [todolistId]: tasksObj[todolistId].map(task => task.id === taskId ? {...task, title: newTitle} : task)
+        })
+    }
+
+
     function changeFilter(value: FilterValuesType, todolistID: string) { // педадам ее callback-ом в todolist
         let todolist = todolists.find((tl) => tl.id === todolistID);
         if (todolist) {
@@ -81,6 +87,10 @@ function App() {
         setTasks({...tasksObj});
     }
 
+    function changeTodolistTitle(todolistId: string, newTitle: string) {
+        setTodolist(todolists.map(tl => tl.id === todolistId ? {...tl, title: newTitle} : tl));
+    }
+
     function addTodolist(title: string) {
         let newTodolist: TodolistType = {
             id: v1(),
@@ -94,16 +104,6 @@ function App() {
         })
     }
 
-    function changeTaskTitle(taskId: string, newTitle: string, todolistId: string) {
-        setTasks({
-            ...tasksObj,
-            [todolistId]: tasksObj[todolistId].map(task => task.id === taskId ? {...task, title: newTitle} : task)
-        })
-    }
-
-    function changeTodolistTitle(todolistId: string, newTitle: string) {
-        setTodolist(todolists.map(tl => tl.id === todolistId ? {...tl, title: newTitle} : tl));
-    }
 
     return (
         <div className="App">
