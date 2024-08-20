@@ -55,7 +55,7 @@ export function TodoList(props: PropsType) {
             <AddItemForm addItem={addTask}/>
             <div>
                 {
-                    props.tasks.map((t) => {
+                    props.tasks?.map((t) => {
                         const onRemoveHandler = () => props.removeTask(t.id, props.id);
                         return (<div key={t.id} className={t.isDone ? 'is-done' : ''}>
                                 {/*<input type="checkbox"*/}
