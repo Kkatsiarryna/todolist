@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useCallback} from "react";
 import {FilterValuesType} from '../../App';
 import {AddItemForm} from "../AddItemForm";
 import {EditableSpan} from "../EditableSpan";
@@ -25,7 +25,8 @@ type PropsType = {
     changeTodolistTitle: (todolistId: string, newTitle: string) => void
 }
 
-export function TodoList(props: PropsType) {
+export const TodoList = React.memo(function(props: PropsType) {
+    console.log('TodoList is called')
     const onAllClickHandler = () => props.changeFilter('all', props.id);
     const onActiveClickHandler = () => props.changeFilter('active', props.id);
     const onCompletedClickHandler = () => props.changeFilter('completed', props.id);
@@ -35,14 +36,25 @@ export function TodoList(props: PropsType) {
     const removeTodolist = () => {
         props.removeTodolist(props.id);
     }
-    const addTask = (title: string) => {
+
+    const addTask = useCallback ((title: string) => {
         props.addTask(title, props.id)
-    }
+    }, [])
+
     const onChangeTitleHandler = (taskId: string, newValue: string) => {
         props.changeTaskTitle(taskId, newValue, props.id);
     }
     const changeTodolistTitleHandler = (newTitle: string) => {
         props.changeTodolistTitle( props.id, newTitle)
+    }
+
+    let tasksForTodolist = props.tasks;
+
+    if (props.filter === 'completed') {
+        tasksForTodolist = props.tasks.filter(t => t.isDone);
+    }
+    if (props.filter === 'active') {
+        tasksForTodolist = props.tasks.filter(t => !t.isDone);
     }
 
     return (
@@ -55,7 +67,7 @@ export function TodoList(props: PropsType) {
             <AddItemForm addItem={addTask}/>
             <div>
                 {
-                    props.tasks?.map((t) => {
+                    tasksForTodolist.map((t) => {
                         const onRemoveHandler = () => props.removeTask(t.id, props.id);
                         return (<div key={t.id} className={t.isDone ? 'is-done' : ''}>
                                 {/*<input type="checkbox"*/}
@@ -95,7 +107,7 @@ export function TodoList(props: PropsType) {
         </div>
 
     )
-}
+})
 
 
 

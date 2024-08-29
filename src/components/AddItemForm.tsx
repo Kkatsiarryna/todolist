@@ -6,7 +6,8 @@ type AddItemPropstype = {
     addItem: (title: string) => void
 }
 
-export function AddItemForm(props: AddItemPropstype) {
+export const  AddItemForm = React.memo((props: AddItemPropstype) => {
+    console.log('AddItemForm is called');
     const [newTaskTitle, setNewTaskTitle] = useState("");
     const [error, setError] = useState<string | null>(null);
 
@@ -14,7 +15,9 @@ export function AddItemForm(props: AddItemPropstype) {
         setNewTaskTitle(e.currentTarget.value) // элемент с которым произошло событие. значение
     }
     const keyDownHandler = (e: KeyboardEvent<HTMLElement>) => {
-        setError(null);
+        if( error !== null) {
+            setError(null);
+        }
         if (e.key === 'Enter') {
             props.addItem(newTaskTitle)
             setNewTaskTitle('')
@@ -53,4 +56,4 @@ export function AddItemForm(props: AddItemPropstype) {
             {/*{error && <div className='error-message'>{error}</div>}*/}
         </div>
     )
-}
+});
