@@ -20,36 +20,29 @@ type PropsType = {
     addTask: (title: string, todolistId: string) => void
     filter: FilterValuesType
     removeTodolist: (todolistId: string) => void
-
+    changeTodolistTitle: (todolistId: string, newTitle: string) => void
     changeTaskStatus: (taskId: string, isDone: boolean, todolistId: string) => void
     changeTaskTitle: (taskId: string, newTitle: string, todolistId: string) => void
     removeTask: (id: string, todolistId: string) => void
-
-    changeTodolistTitle: (todolistId: string, newTitle: string) => void
 }
 
-export const TodoList = React.memo(function(props: PropsType) {
+export const TodoList = React.memo(function (props: PropsType) {
     console.log('TodoList is called')
-    const onAllClickHandler = useCallback( () => props.changeFilter('all', props.id), [props.changeFilter, props.id])
-    const onActiveClickHandler = useCallback( () => props.changeFilter('active', props.id), [props.changeFilter, props.id])
-    const onCompletedClickHandler = useCallback( () => props.changeFilter('completed', props.id), [props.changeFilter, props.id])
+    const onAllClickHandler = useCallback(() => props.changeFilter('all', props.id), [props.changeFilter, props.id])
+    const onActiveClickHandler = useCallback(() => props.changeFilter('active', props.id), [props.changeFilter, props.id])
+    const onCompletedClickHandler = useCallback(() => props.changeFilter('completed', props.id), [props.changeFilter, props.id])
 
-    const onChangeStatusHandeler = (taskId: string, isDone: boolean) => {
-        props.changeTaskStatus(taskId, isDone, props.id)
-    }
+
     const removeTodolist = () => {
         props.removeTodolist(props.id);
     }
 
-    const addTask = useCallback ((title: string) => {
+    const addTask = useCallback((title: string) => {
         props.addTask(title, props.id)
     }, [props.addTask, props.id])
 
-    const onChangeTitleHandler = (taskId: string, newValue: string) => {
-        props.changeTaskTitle(taskId, newValue, props.id);
-    }
     const changeTodolistTitleHandler = useCallback((newTitle: string) => {
-        props.changeTodolistTitle( props.id, newTitle)
+        props.changeTodolistTitle(props.id, newTitle)
     }, [props.changeTodolistTitle, props.id])
 
     let tasksForTodolist = props.tasks;
@@ -63,7 +56,7 @@ export const TodoList = React.memo(function(props: PropsType) {
 
     return (
         <div>
-            <h3> <EditableSpan title={props.title} onChange={changeTodolistTitleHandler}/>
+            <h3><EditableSpan title={props.title} onChange={changeTodolistTitleHandler}/>
                 <IconButton aria-label='delete' onClick={removeTodolist}>
                     <Delete/>
                 </IconButton>
@@ -71,40 +64,19 @@ export const TodoList = React.memo(function(props: PropsType) {
             <AddItemForm addItem={addTask}/>
             <div>
                 {
-                    tasksForTodolist.map((t) =><Task
-                        key = {t.id}
+                    tasksForTodolist.map((t) => <Task
+                        key={t.id}
                         task={t}
-                        onChangeStatusHandeler = {onChangeStatusHandeler}
-                        onChangeTitleHandler = {onChangeTitleHandler}
-                        removeTask = {props.removeTask}
-                        todolistID = {props.id}
-                        /> )
-
-                    // {
-                    //     const onRemoveHandler = () => props.removeTask(t.id, props.id);
-                    //     return (<div key={t.id} className={t.isDone ? 'is-done' : ''}>
-                    //             {/*<input type="checkbox"*/}
-                    //             {/*       onChange={(e) => onChangeStatusHandeler(t.id, e.currentTarget.checked)}*/}
-                    //             {/*       checked={t.isDone}/>  */}
-                    //             <Checkbox onChange={(e) => onChangeStatusHandeler(t.id, e.currentTarget.checked)}
-                    //                         checked={t.isDone} />
-                    //
-                    //             <EditableSpan title={t.title}
-                    //                           onChange={ (newValue) => onChangeTitleHandler(t.id, newValue)
-                    //                           }/>
-                    //             {/*<button onClick={onRemoveHandler}>x</button>*/}
-                    //             <IconButton aria-label='delete' onClick={onRemoveHandler}>
-                    //                 <Delete/>
-                    //             </IconButton>
-                    //         </div>
-                    //
-                    //     )
-                    // })
+                        changeTaskStatus={props.changeTaskStatus}
+                        changeTaskTitle={props.changeTaskTitle}
+                        removeTask={props.removeTask}
+                        todolistID={props.id}
+                    />)
                 }
             </div>
             <div>
                 <Button onClick={onAllClickHandler}
-                        // className={props.filter === 'all' ? 'active-filter' : ""}
+                    // className={props.filter === 'all' ? 'active-filter' : ""}
                         variant={props.filter === 'all' ? 'contained' : 'text'}
                 >all
                 </Button>
@@ -123,17 +95,27 @@ export const TodoList = React.memo(function(props: PropsType) {
 })
 
 
-
-
-
-
-
-
-
-
-
-
-
+///////////////////////////////////////////////////////////////////////////////////////////
+// {
+//     const onRemoveHandler = () => props.removeTask(t.id, props.id);
+//     return (<div key={t.id} className={t.isDone ? 'is-done' : ''}>
+//             {/*<input type="checkbox"*/}
+//             {/*       onChange={(e) => onChangeStatusHandeler(t.id, e.currentTarget.checked)}*/}
+//             {/*       checked={t.isDone}/>  */}
+//             <Checkbox onChange={(e) => onChangeStatusHandeler(t.id, e.currentTarget.checked)}
+//                         checked={t.isDone} />
+//
+//             <EditableSpan title={t.title}
+//                           onChange={ (newValue) => onChangeTitleHandler(t.id, newValue)
+//                           }/>
+//             {/*<button onClick={onRemoveHandler}>x</button>*/}
+//             <IconButton aria-label='delete' onClick={onRemoveHandler}>
+//                 <Delete/>
+//             </IconButton>
+//         </div>
+//
+//     )
+// })
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////
