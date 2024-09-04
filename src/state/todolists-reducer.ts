@@ -44,8 +44,8 @@ type ActionsType =
     | ChangeTodolistTitleActionType
     | ChangeTodolistFilterActionType
 
-export let todolistID1 = v1();
-export let todolistID2 = v1();
+// export let todolistID1 = v1();
+// export let todolistID2 = v1();
 
 const initialState: Array<TodolistType> = [
     // {id: todolistID1, title: "What to learn", filter: 'all'},

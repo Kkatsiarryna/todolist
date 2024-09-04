@@ -2,7 +2,7 @@ import React, {useReducer} from 'react';
 import './App.css';
 import {TodoList} from './components/TodoList/TodoList';
 import {v1} from "uuid";
-import {AddItemForm} from "./components/AddItemForm";
+import {AddItemForm} from "./components/addItemForm/AddItemForm";
 import AppBar from "@mui/material/AppBar";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
